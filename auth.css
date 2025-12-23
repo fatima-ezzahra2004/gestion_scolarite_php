@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #F8FAFC;
+    height: 100vh;
+}
+
+/* Layout */
+.auth-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Left */
+.auth-left {
+    flex: 1;
+    background: linear-gradient(135deg, #0B1C2D, #0E7490);
+    color: white;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-left h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.auth-left p {
+    font-size: 15px;
+    opacity: 0.9;
+    max-width: 400px;
+}
+
+/* Right */
+.auth-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Card */
+.auth-card {
+    background: white;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.auth-card h2 {
+    margin-bottom: 10px;
+    color: #0F172A;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #64748B;
+    margin-bottom: 25px;
+}
+
+/* Inputs */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #334155;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #CBD5E1;
+}
+
+.form-group input:focus {
+    border-color: #0E7490;
+    outline: none;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0E7490;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    background: #0B5F73;
+}
+
+/* Links */
+.auth-links {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.auth-links a {
+    color: #0E7490;
+    text-decoration: none;
+}
+
+/* Message */
+.message {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.success {
+    color: #22C55E;
+}
+
+.error {
+    color: #EF4444;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .auth-left {
+        display: none;
+    }
+}
