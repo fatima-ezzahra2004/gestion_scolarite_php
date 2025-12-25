@@ -5,7 +5,7 @@
     <div class="bg-white rounded-xl w-[700px] p-6 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Modifier le prospect</h2>
-            <button onclick="closeModal('modalEdit')">✕</button>
+            <button onclick="closeModals('modalEdit')">✕</button>
         </div>
 
         <form id="editForm" class="grid grid-cols-2 gap-4">
@@ -72,7 +72,7 @@
 
             <div class="col-span-2 flex justify-end gap-3 mt-4">
                 <button type="button"
-                        onclick="closeModal('modalEdit')"
+                        onclick="closeModals('modalEdit')"
                         class="px-4 py-2 border rounded">
                     Annuler
                 </button>

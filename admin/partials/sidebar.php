@@ -15,12 +15,12 @@
             Prospects
         </a>
 
-        <a href="etudiants.php">
+        <a href="../etudiants/etudiants.php">
             <i class="fa-solid fa-user-graduate"></i>
             Étudiants
         </a>
 
-        <a href="formations.php">
+        <a href="../formations/formations.php">
             <i class="fa-solid fa-book-open"></i>
             Formations
         </a>

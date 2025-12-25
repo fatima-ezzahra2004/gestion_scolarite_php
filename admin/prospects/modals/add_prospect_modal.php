@@ -9,7 +9,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center border-b pb-3 mb-4">
             <h2 class="text-lg font-semibold">Ajouter un prospect :</h2>
-            <button onclick="closModal()" class="text-gray-400 hover:text-gray-600">
+            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -145,7 +145,7 @@
             <!-- Footer -->
             <div class="flex justify-end gap-3 pt-6 border-t">
                 <button type="button"
-                        onclick="closModal()"
+                        onclick="closeModal()"
                         class="px-4 py-2 border rounded-md text-sm hover:bg-gray-50">
                     Fermer
                 </button>

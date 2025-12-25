@@ -2,17 +2,18 @@
 
 require_once '../../config.php';
 
-$view = $_GET['view'] ?? 'active'; // active | trash
-require_once 'actions/list_etats.php';
-require_once 'actions/list_prospects.php';
-require_once 'actions/helpers.php';
+$view = $_GET['view'] ?? 'normal';
+
+
+require_once 'actions/list_formations.php';
+
 
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Prospects | EduManager</title>
+    <title>Formations | EduManager</title>
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,21 +42,20 @@ require_once 'actions/helpers.php';
 
             <?php include 'views/header.php'; ?>
             <?php include 'views/filters.php'; ?>
-            <?php include 'views/prospects_grid.php'; ?>
+            <?php include 'views/formations_grid.php'; ?>
 
         </div>
     </main>
 </div>
  <?php
-include 'modals/add_prospect_modal.php';
-include 'modals/details_prospect_modal.php';
-include 'modals/edit_prospect_modal.php';
-include 'modals/convertir_modal.php';
+include 'modals/add_formation_modal.php';
+include 'modals/details_formation_modal.php';
+include 'modals/edit_formation_modal.php';
 include 'modals/delete_modal.php';
 include 'modals/restore_modal.php'; 
 
 ?>
-<script src="assets/js/prospects.js"></script>
+<script src="assets/js/formations.js"></script>
 
 
 </body>

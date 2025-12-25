@@ -1,14 +1,22 @@
+let restoreProspectId = null;
+let deleteId = null;
+
+/* =========================
+   AJOUT PROSPECTS
+========================= */
 
 function openModal() {
     document.getElementById('modalProspect').classList.remove('hidden');
     document.getElementById('modalProspect').classList.add('flex');
 }
-function closModal() {
+
+function closeModal() {
     document.getElementById('modalProspect').classList.add('hidden');
-     document.getElementById('modalProspect').classList.remove('flex');
+    document.getElementById('modalProspect').classList.remove('flex');
 }
-
-
+/* =========================
+   ALERT SESSION AUTO HIDE
+========================= */
 document.addEventListener('DOMContentLoaded', function () {
 
     const alertBox = document.getElementById('sessionAlert');
@@ -23,8 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 200);
     }, 2000);
 });
-
-
+/* =========================
+   MENU 3 POINTS
+========================= */
 
 function toggleMenu(id) {
     document.querySelectorAll('[id^="menu-"]').forEach(menu => {
@@ -45,11 +54,9 @@ document.addEventListener('click', function (e) {
         });
     }
 });
-
-
-
-
-
+/* =========================
+   DETAILS PROSPECT
+========================= */
 function openDetails(id) {
     fetch('ajax/get_prospect.php?id=' + id)
         .then(res => res.text())
@@ -58,6 +65,10 @@ function openDetails(id) {
             document.getElementById('modalDetails').classList.remove('hidden');
         });
 }
+
+/* =========================
+   EDIT PROSPECT
+========================= */
 
 function openEdit(id) {
     fetch('ajax/get_prospect_json.php?id=' + id)
@@ -88,14 +99,11 @@ function openEdit(id) {
             document.getElementById('modalEdit').classList.remove('hidden');
         });
 }
-
-
-function closeModal(id) {
+function closeModals(id) {
     document.getElementById(id).classList.add('hidden');
 }
-
 // submit modification
-document.getElementById('editForm').addEventListener('submit', function(e) {
+document.getElementById('editForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     fetch('ajax/update_prospect.php', {
@@ -105,31 +113,113 @@ document.getElementById('editForm').addEventListener('submit', function(e) {
 });
 
 
-let deleteId = null;
+/* =========================
+   DELETE (SOFT DELETE)
+========================= */
 
 function confirmDelete(id) {
     deleteId = id;
-    document.getElementById('modalDelete').classList.remove('hidden');
+    const modal = document.getElementById('modalDelete');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
 }
 
+// Confirmer la suppression
 document.getElementById('btnDeleteConfirm').addEventListener('click', function () {
+    if (!deleteId) return;
+
     fetch('ajax/delete_prospect.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: 'id=' + deleteId
+        body: 'id=' + encodeURIComponent(deleteId)
     })
     .then(res => res.text())
     .then(resp => {
-        if (resp.trim() === 'success') {
+        closeModal('modalDelete');
+
+        if (resp.trim() === 'deleted') {
             location.reload();
-        } else {
-            alert(resp);
         }
     })
-    .catch(() => alert('Erreur réseau'));
+    .catch(() => {
+        alert('Erreur réseau. Veuillez réessayer.');
+        closeModal('modalDelete');
+    });
 });
 
 
+/* =========================
+   RESTORE PROSPECT
+========================= */
+function openRestoreModal(id) {
+    restoreProspectId = id;
 
+    const modal = document.getElementById('restoreModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    // fermer le menu 3 points si ouvert
+    const menu = document.getElementById('menu-' + id);
+    if (menu) menu.classList.add('hidden');
+}
+
+function closeRestoreModal() {
+    const modal = document.getElementById('restoreModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+
+    restoreProspectId = null;
+}
+
+
+function confirmRestore() {
+    if (!restoreProspectId) return;
+
+    fetch('ajax/restore_prospect.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'id=' + encodeURIComponent(restoreProspectId)
+    })
+    .then(res => res.text())
+    .then(res => {
+        if (res.trim() === 'restored') {
+            location.reload();
+        } else {
+            alert('Erreur lors de la restauration');
+        }
+    })
+    .catch(() => {
+        alert('Erreur réseau');
+    });
+}
+
+/* =========================
+   CONVERT PROSPECT
+========================= */
+
+function closeConvertModal() {
+    const modal = document.getElementById('convertModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+function openConvertModal(id, nom) {
+    const modal = document.getElementById('convertModal');
+
+    if (!modal) {
+        console.error('Modal introuvable');
+        return;
+    }
+
+    document.getElementById('convertProspectId').value = id;
+    document.getElementById('convertProspectName').textContent = nom;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    const menu = document.getElementById('menu-' + id);
+    if (menu) menu.classList.add('hidden');
+}

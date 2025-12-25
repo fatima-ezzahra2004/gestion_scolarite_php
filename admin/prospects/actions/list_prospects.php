@@ -10,6 +10,7 @@ SELECT
     p.telephone,
     p.email,
     p.ville,
+    p.deleted_at,
     ep.nom AS etat,
     c.nom  AS canal,
     s.nom  AS source
@@ -20,7 +21,14 @@ LEFT JOIN sources s ON s.id_source = p.id_source
 WHERE 1=1
 ";
 
+if ($view === 'trash') {
+    $sqlProspects .= " AND p.deleted_at IS NOT NULL ";
+} else {
+    $sqlProspects .= " AND p.deleted_at IS NULL ";
+}
+
 $params = [];
+
 
 /* ✅ Filtre par état */
 $etatSelectionne = isset($_GET['etat']) && is_numeric($_GET['etat'])
@@ -32,7 +40,6 @@ if ($etatSelectionne) {
     $params['etat'] = $etatSelectionne;
 }
 
-/* ✅ Recherche globale */
 if (!empty($recherche)) {
     $sqlProspects .= "
         AND (
@@ -47,7 +54,6 @@ if (!empty($recherche)) {
             OR ep.nom LIKE :search
         )
     ";
-
     $params['search'] = '%' . $recherche . '%';
 }
 

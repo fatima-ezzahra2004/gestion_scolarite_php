@@ -5,13 +5,21 @@ require_once '../../config.php';
    1️⃣ TUTEUR
 ===================== */
 
-$id_tuteur = null;
+ $id_tuteur = null;
 
-if (!empty($_POST['tuteur_cin'])) {
+    if (!empty($_POST['tuteur_cin']) || !empty($_POST['tuteur_email'])) {
 
-    $stmt = $pdo->prepare("SELECT id_tuteur FROM tuteurs WHERE cin = ?");
-    $stmt->execute([$_POST['tuteur_cin']]);
-    $tuteur = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("
+            SELECT id_tuteur FROM tuteurs
+            WHERE cin = :cin OR email = :email
+            LIMIT 1
+        ");
+        $stmt->execute([
+            ':cin' => $_POST['tuteur_cin'] ?? null,
+            ':email' => $_POST['tuteur_email'] ?? null
+        ]);
+
+        $tuteur = $stmt->fetch();
 
     if ($tuteur) {
         $id_tuteur = $tuteur['id_tuteur'];
