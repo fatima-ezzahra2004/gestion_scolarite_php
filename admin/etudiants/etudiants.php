@@ -13,7 +13,7 @@ require_once '../../config.php';
  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="../dashboard/assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/pro_modal.css">
-        <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/modal.css">
 </head>
 
 <body>

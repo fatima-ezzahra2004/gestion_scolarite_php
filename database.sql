@@ -1,5 +1,5 @@
-CREATE DATABASE gestion_scolarite
-CHARACTER SET utf8mb4
+CREATE DATABASE gestion_scolarite;
+CHARACTER SET utf8mb4;
 COLLATE utf8mb4_general_ci;
 
 USE gestion_scolarite;
@@ -17,7 +17,7 @@ CREATE TABLE users (
         'enseignant',
         'etudiant',
         'parent'
-    ) NOT NULL DEFAULT 'agent',
+    ) NOT NULL DEFAULT 'admin',
 
     reset_token VARCHAR(255),
     token_expire DATETIME,
