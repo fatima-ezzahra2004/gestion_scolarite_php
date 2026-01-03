@@ -12,96 +12,89 @@
       </button>
     </div>
 
-    <form method="POST" action="store_etudiant.php" class="space-y-6">
+   <form method="POST"
+      action="store_etudiant.php"
+      enctype="multipart/form-data"
+      class="space-y-6">
 
-      <!-- ================= ÉTUDIANT ================= -->
-      <div>
-        <h4 class="text-sm font-semibold text-gray-600 mb-3">
-          Informations de l’étudiant
-        </h4>
+  <!-- ================= USER ================= -->
+  <div>
+    <h4 class="text-sm font-semibold text-gray-600 mb-3">
+      Utilisateur (compte déjà créé)
+    </h4>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input name="nom" placeholder="Nom *" required class="input">
-          <input name="prenom" placeholder="Prénom *" required class="input">
+    <select name="user_id" required class="input">
+      <option value="">-- Sélectionner l’étudiant --</option>
+      <?php foreach ($users_etudiants as $u): ?>
+        <option value="<?= $u['id'] ?>">
+          <?= htmlspecialchars($u['prenom'].' '.$u['nom'].' — '.$u['email']) ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+  </div>
 
-          <select name="genre" class="input" required>
-            <option value="">-- Sexe --</option>
-            <option value="M">Masculin</option>
-            <option value="F">Féminin</option>
-          </select>
+  <!-- ================= ÉTUDES ================= -->
+  <div>
+    <h4 class="text-sm font-semibold text-gray-600 mb-3">
+      Informations académiques
+    </h4>
 
-          <select name="civilite" class="input" required>
-            <option value="">-- Civilité --</option>
-            <option value="Monsieur">Monsieur</option>
-            <option value="Madame">Madame</option>
-            <option value="Mademoiselle">Mademoiselle</option>
-          </select>
+    <input name="niveau_etude" placeholder="Niveau d’étude *" required class="input">
+  </div>
 
-          <input type="date" name="date_naissance" class="input">
-          <input name="nationalite" placeholder="Nationalité" class="input">
+  <!-- ================= DOCUMENTS ================= -->
+<div>
+  <h4 class="text-sm font-semibold text-gray-600 mb-3">
+    Documents
+  </h4>
 
-          <input name="cin" placeholder="CIN" class="input">
-          <input name="ville" placeholder="Ville" class="input">
-        </div>
-      </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-      <!-- ================= CONTACT ================= -->
-      <div>
-        <h4 class="text-sm font-semibold text-gray-600 mb-3">Coordonnées</h4>
+    <!-- CIN -->
+    <div>
+      <label class="block text-xs font-medium text-gray-600 mb-1">
+        CIN (PDF)
+      </label>
+      <input type="file"
+             name="pdf_cin"
+             accept="application/pdf"
+             class="input">
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input name="email" type="email" placeholder="Email" class="input">
-          <input name="telephone" placeholder="Téléphone" class="input">
-          <input name="whatsapp" placeholder="WhatsApp" class="input">
-        </div>
+    <!-- PHOTO PROFIL -->
+    <div>
+      <label class="block text-xs font-medium text-gray-600 mb-1">
+        Photo de profil (PDF / Image)
+      </label>
+      <input type="file"
+             name="pdf_profil"
+             accept="application/pdf,image/*"
+             class="input">
+    </div>
 
-        <input name="adresse" placeholder="Adresse" class="input mt-4">
-      </div>
+    <!-- DIPLÔME -->
+    <div>
+      <label class="block text-xs font-medium text-gray-600 mb-1">
+        Diplôme (PDF / Image)
+      </label>
+      <input type="file"
+             name="diplome_scan"
+             accept="application/pdf,image/*"
+             class="input">
+    </div>
 
-      <!-- ================= TUTEUR ================= -->
-      <div>
-        <h4 class="text-sm font-semibold text-gray-600 mb-3">
-          Parent / Tuteur
-        </h4>
+  </div>
+</div>
 
-        <div class="bg-gray-50 border rounded-lg p-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-            <select name="tuteur_lien_parente" class="input">
-              <option value="">-- Lien de parenté --</option>
-              <option value="Père">Père</option>
-              <option value="Mère">Mère</option>
-              <option value="Tuteur">Tuteur</option>
-            </select>
+  <div class="flex justify-end gap-3 pt-6 border-t">
+    <button type="submit"
+            class="px-4 py-2 bg-sky-500 text-white rounded-md">
+      Enregistrer
+    </button>
+  </div>
 
-            <input name="tuteur_nom" placeholder="Nom du tuteur" class="input">
-            <input name="tuteur_prenom" placeholder="Prénom du tuteur" class="input">
+</form>
 
-            <input name="tuteur_telephone" placeholder="Téléphone du tuteur" class="input">
-            <input name="tuteur_whatsapp" placeholder="WhatsApp du tuteur" class="input">
-
-            <input name="tuteur_email" type="email"
-                   placeholder="Email du tuteur" class="input">
-
-            <input name="tuteur_cin" placeholder="CIN du tuteur" class="input">
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="flex justify-end gap-3 pt-6 border-t">
-        <button type="button"
-                onclick="closeAdd()"
-                class="px-4 py-2 border rounded-md text-sm">
-          Fermer
-        </button>
-        <button type="submit"
-                class="px-4 py-2 bg-sky-500 hover:bg-sky-600
-                       text-white rounded-md text-sm font-medium">
-          Enregistrer
-        </button>
-      </div>
-
-    </form>
   </div>
 </div>

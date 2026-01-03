@@ -1,214 +1,122 @@
-let restoreProspectId = null;
+import { showModal, hideModal } from './ui.js';
+
 let deleteId = null;
+let restoreProspectId = null;
 
 /* =========================
-   AJOUT PROSPECTS
+   DETAILS
 ========================= */
-
-function openModal() {
-    document.getElementById('modalProspect').classList.remove('hidden');
-    document.getElementById('modalProspect').classList.add('flex');
-}
-
-function closeModal() {
-    document.getElementById('modalProspect').classList.add('hidden');
-    document.getElementById('modalProspect').classList.remove('flex');
-}
-/* =========================
-   ALERT SESSION AUTO HIDE
-========================= */
-document.addEventListener('DOMContentLoaded', function () {
-
-    const alertBox = document.getElementById('sessionAlert');
-    if (!alertBox) return;
-
-    setTimeout(() => {
-        alertBox.style.transition = "opacity 0.3s";
-        alertBox.style.opacity = "0";
-
-        setTimeout(() => {
-            alertBox.remove();
-        }, 200);
-    }, 2000);
-});
-/* =========================
-   MENU 3 POINTS
-========================= */
-
-function toggleMenu(id) {
-    document.querySelectorAll('[id^="menu-"]').forEach(menu => {
-        if (menu.id !== 'menu-' + id) {
-            menu.classList.add('hidden');
-        }
-    });
-
-    const menu = document.getElementById('menu-' + id);
-    menu.classList.toggle('hidden');
-}
-
-// Fermer si clic ailleurs
-document.addEventListener('click', function (e) {
-    if (!e.target.closest('.relative')) {
-        document.querySelectorAll('[id^="menu-"]').forEach(menu => {
-            menu.classList.add('hidden');
-        });
-    }
-});
-/* =========================
-   DETAILS PROSPECT
-========================= */
-function openDetails(id) {
-    fetch('ajax/get_prospect.php?id=' + id)
-        .then(res => res.text())
+window.openDetails = function (id) {
+    fetch(`ajax/get_prospect.php?id=${id}`)
+        .then(r => r.text())
         .then(html => {
             document.getElementById('detailsContent').innerHTML = html;
-            document.getElementById('modalDetails').classList.remove('hidden');
+            showModal('modalDetails');
         });
-}
+};
+
+window.closeDetails = function () {
+    hideModal('modalDetails');
+};
 
 /* =========================
-   EDIT PROSPECT
+   EDIT
 ========================= */
-
-function openEdit(id) {
-    fetch('ajax/get_prospect_json.php?id=' + id)
-        .then(res => res.json())
+window.openEdit = function (id) {
+    fetch(`ajax/get_prospect_json.php?id=${id}`)
+        .then(r => r.json())
         .then(p => {
-            if (!p) {
-                alert('Prospect introuvable');
-                return;
-            }
+            if (!p) return alert('Prospect introuvable');
 
-            document.getElementById('edit_id').value = p.id_prospect;
-            document.getElementById('edit_nom').value = p.nom ?? '';
-            document.getElementById('edit_prenom').value = p.prenom ?? '';
-            document.getElementById('edit_telephone').value = p.telephone ?? '';
-            document.getElementById('edit_whatsapp').value = p.whatsapp ?? '';
-            document.getElementById('edit_email').value = p.email ?? '';
-            document.getElementById('edit_cin').value = p.cin ?? '';
-            document.getElementById('edit_ville').value = p.ville ?? '';
-            document.getElementById('edit_nationalite').value = p.nationalite ?? '';
-            document.getElementById('edit_genre').value = p.genre ?? '';
-            document.getElementById('edit_civilite').value = p.civilite ?? '';
-            document.getElementById('edit_date_naissance').value = p.date_naissance ?? '';
-            document.getElementById('edit_canal').value = p.id_canal ?? '';
-            document.getElementById('edit_source').value = p.id_source ?? '';
-            document.getElementById('edit_etat').value = p.id_etat ?? '';
-            document.getElementById('edit_adresse').value = p.adresse ?? '';
+            const map = {
+                edit_id: p.id_prospect,
+                edit_nom: p.nom,
+                edit_prenom: p.prenom,
+                edit_telephone: p.telephone,
+                edit_whatsapp: p.whatsapp,
+                edit_email: p.email,
+                edit_cin: p.cin,
+                edit_ville: p.ville,
+                edit_genre:p.genre,
+                edit_date_naissance : p.date_naissance,
+                edit_tuteur_nom: p.tuteur_nom,
+                edit_tuteur_prenom: p.tuteur_prenom,
+                edit_tuteur_tel: p.tuteur_tel,
+                edit_lien_parente: p.lien_parente
+            };
 
-            document.getElementById('modalEdit').classList.remove('hidden');
+            Object.entries(map).forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val ?? '';
+            });
+
+            showModal('modalEdit');
         });
-}
-function closeModals(id) {
-    document.getElementById(id).classList.add('hidden');
-}
-// submit modification
-document.getElementById('editForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+};
 
-    fetch('ajax/update_prospect.php', {
-        method: 'POST',
-        body: new FormData(this)
-    }).then(() => location.reload());
-});
-
+window.closeEdit = function () {
+    hideModal('modalEdit');
+};
 
 /* =========================
-   DELETE (SOFT DELETE)
+   DELETE
 ========================= */
-
-function confirmDelete(id) {
+window.confirmDelete = function (id) {
     deleteId = id;
-    const modal = document.getElementById('modalDelete');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
+    showModal('modalDelete');
+};
 
-// Confirmer la suppression
-document.getElementById('btnDeleteConfirm').addEventListener('click', function () {
+window.closeDelete = function () {
+    deleteId = null;
+    hideModal('modalDelete');
+};
+
+document.getElementById('btnDeleteConfirm')?.addEventListener('click', () => {
     if (!deleteId) return;
 
     fetch('ajax/delete_prospect.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'id=' + encodeURIComponent(deleteId)
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id=${deleteId}`
     })
-    .then(res => res.text())
-    .then(resp => {
-        closeModal('modalDelete');
-
-        if (resp.trim() === 'deleted') {
-            location.reload();
-        }
-    })
-    .catch(() => {
-        alert('Erreur réseau. Veuillez réessayer.');
-        closeModal('modalDelete');
+    .then(() => {
+        hideModal('modalDelete'); // ✅ hideModal utilisé
+        location.reload();
     });
 });
 
-
 /* =========================
-   RESTORE PROSPECT
+   RESTORE
 ========================= */
-function openRestoreModal(id) {
+window.openRestoreModal = function (id) {
     restoreProspectId = id;
+    showModal('restoreModal');
+};
 
-    const modal = document.getElementById('restoreModal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-
-    // fermer le menu 3 points si ouvert
-    const menu = document.getElementById('menu-' + id);
-    if (menu) menu.classList.add('hidden');
-}
-
-function closeRestoreModal() {
-    const modal = document.getElementById('restoreModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-
+window.closeRestoreModal = function () {
     restoreProspectId = null;
-}
+    hideModal('restoreModal');
+};
 
-
-function confirmRestore() {
+window.confirmRestore = function () {
     if (!restoreProspectId) return;
 
     fetch('ajax/restore_prospect.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: 'id=' + encodeURIComponent(restoreProspectId)
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id=${restoreProspectId}`
     })
-    .then(res => res.text())
-    .then(res => {
-        if (res.trim() === 'restored') {
-            location.reload();
-        } else {
-            alert('Erreur lors de la restauration');
-        }
-    })
-    .catch(() => {
-        alert('Erreur réseau');
+    .then(() => {
+        hideModal('restoreModal'); // ✅ hideModal utilisé
+        location.reload();
     });
-}
-
+};
 /* =========================
    CONVERT PROSPECT
 ========================= */
 
-function closeConvertModal() {
+window.openConvertModal = function (id, nom) {
     const modal = document.getElementById('convertModal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
-function openConvertModal(id, nom) {
-    const modal = document.getElementById('convertModal');
-
     if (!modal) {
         console.error('Modal introuvable');
         return;
@@ -217,9 +125,56 @@ function openConvertModal(id, nom) {
     document.getElementById('convertProspectId').value = id;
     document.getElementById('convertProspectName').textContent = nom;
 
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    showModal('convertModal');
 
-    const menu = document.getElementById('menu-' + id);
-    if (menu) menu.classList.add('hidden');
-}
+    // fermer menu 3 points si ouvert
+    document.getElementById(`menu-${id}`)?.classList.add('hidden');
+};
+
+window.closeConvertModal = function () {
+    hideModal('convertModal');
+};
+/* =========================
+   ADD PROSPECT
+========================= */
+
+window.openAddProspectModal = function () {
+    showModal('modalProspect');
+};
+
+window.closeAddProspectModal = function () {
+    hideModal('modalProspect');
+};
+
+
+
+/* =========================
+   FORCE DELETE (DEFINITIVE)
+========================= */
+
+let forceDeleteId = null;
+
+window.openForceDeleteModal = function (id) {
+    forceDeleteId = id;
+    showModal('restoreModal');
+};
+
+window.closeForceDeleteModal = function () {
+    forceDeleteId = null;
+    hideModal('modalForceDelete');
+};
+
+window.confirmForceDelete = function () {
+    if (!forceDeleteId) return;
+
+    fetch('ajax/force_delete_prospect.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id=${forceDeleteId}`
+    })
+    .then(() => {
+        hideModal('modalForceDelete');
+        location.reload();
+    });
+};
+

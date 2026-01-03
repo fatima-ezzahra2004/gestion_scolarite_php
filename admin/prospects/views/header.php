@@ -9,7 +9,7 @@
             </p>
         </div>
 <div class="flex items-center gap-3">
-    <button onclick="openModal()"
+    <button onclick="openAddProspectModal()"
             class="inline-flex items-center gap-2 px-4 py-2 rounded-lg
                    bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium">
         <i class="fa-solid fa-plus"></i>

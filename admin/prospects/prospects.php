@@ -33,7 +33,10 @@ require_once 'actions/helpers.php';
 
 <div class="layout">
             <?php include '../partials/sidebar.php'; ?>
+            
     <main class="main">
+   
+
             <?php include '../partials/topbar.php'; ?>
      
 
@@ -52,10 +55,11 @@ include 'modals/details_prospect_modal.php';
 include 'modals/edit_prospect_modal.php';
 include 'modals/convertir_modal.php';
 include 'modals/delete_modal.php';
-include 'modals/restore_modal.php'; 
+include 'modals/restore_modal.php';
+include 'modals/force_delete_modal.php';  
 
 ?>
-<script src="assets/js/prospects.js"></script>
+<script type="module" src="assets/js/prospects.js"></script>
 
 
 </body>

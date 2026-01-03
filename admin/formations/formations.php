@@ -24,7 +24,7 @@ require_once 'actions/list_formations.php';
 
     <link rel="stylesheet" href="../dashboard/assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/pro_modal.css">
-        <link rel="stylesheet" href="assets/css/modal.css">
+      
     <style>
 
 </style>

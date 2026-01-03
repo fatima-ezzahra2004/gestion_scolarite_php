@@ -20,7 +20,7 @@
         <!-- AVATAR -->
         <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-700
                     flex items-center justify-center font-semibold text-sm">
-            <?= initiales(($p['prenom'] ?? '') . ' ' . ($p['nom'] ?? '')) ?>
+             <?= strtoupper($p['prenom'][0] . $p['nom'][0]) ?>
         </div>
 
         <div class="flex-1">
@@ -60,16 +60,29 @@
                         class="hidden absolute right-0 mt-2 w-48 bg-white
                                border rounded-xl shadow-lg text-sm z-35">
 
-                        <?php if ($view === 'trash'): ?>
-                            <!-- ===== MODE HISTORIQUE ===== -->
-                            <button
+      <?php if ($view === 'trash'): ?>
+    <!-- ===== MODE HISTORIQUE ===== -->
+
+    <!-- RESTAURER -->
+    <button
+        type="button"
+        onclick="openRestoreModal(<?= (int)$p['id_prospect'] ?>)"
+        class="block w-full text-left px-4 py-2
+               text-green-600 hover:bg-green-50">
+        <i class="fa-solid fa-rotate-left text-xs mr-2"></i>
+        Restaurer
+    </button>
+
+    <!-- SUPPRESSION DEFINITIVE -->
+   <button
     type="button"
-    onclick="openRestoreModal(<?= (int)$p['id_prospect'] ?>)"
-    class="block w-full text-left px-4 py-2
-           text-green-600 hover:bg-green-50 rounded-xl">
-    <i class="fa-solid fa-rotate-left text-xs mr-2"></i>
-    Restaurer
+    onclick="openForceDeleteModal(<?= (int)$p['id_prospect'] ?>)"
+    class="block w-full text-left px-4 py-2 text-red-700 hover:bg-red-50">
+    Supprimer définitivement
 </button>
+
+
+
 
 
 

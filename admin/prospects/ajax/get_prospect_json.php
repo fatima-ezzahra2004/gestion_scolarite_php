@@ -8,7 +8,19 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT * FROM prospects WHERE id_prospect = ?");
+$stmt = $pdo->prepare("
+    SELECT 
+        p.*,
+        t.id_tuteur,
+        t.nom AS tuteur_nom,
+        t.prenom AS tuteur_prenom,
+        t.telephone AS tuteur_tel,
+        t.lien_parente
+    FROM prospects p
+    LEFT JOIN tuteurs t ON p.id_tuteur = t.id_tuteur
+    WHERE p.id_prospect = ?
+");
+
 $stmt->execute([$_GET['id']]);
 
 echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));

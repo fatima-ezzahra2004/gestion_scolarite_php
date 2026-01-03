@@ -6,8 +6,7 @@ SELECT
     f.id_formation,
     f.type_formation,
     f.nom,
-    f.date_debut,
-    f.date_fin,
+    f.duree,
     f.deleted_at
 FROM formations f
 WHERE 1=1
@@ -53,12 +52,9 @@ function filtreColor($type_formation)
 {
     return match ($type_formation) {
         'Master'              => 'border-blue-300 text-blue-600 bg-blue-50',
-        'Certificat'          => 'border-green-300 text-green-600 bg-green-50',
-        'Formation continue'  => 'border-emerald-300 text-emerald-600 bg-emerald-50',
+        'Formation'          => 'border-green-300 text-green-600 bg-green-50',
+        'Technicien Spécialisé '  => 'border-emerald-300 text-emerald-600 bg-emerald-50',
         'Licence'             => 'border-red-300 text-red-600 bg-red-50',
-        'Primaire'            => 'border-blue-300 text-blue-600 bg-blue-50',
-        'Lycée'               => 'border-green-300 text-green-600 bg-green-50',
-        'Préscolaire'         => 'border-emerald-300 text-emerald-600 bg-emerald-50',
         default               => 'border-gray-300 text-gray-600 bg-gray-50',
     };
 }

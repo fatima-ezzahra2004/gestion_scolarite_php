@@ -11,17 +11,5 @@ function filtreColor($etat)
     };
 }
 
-/* Initiales (robuste) */
-function initiales($nom)
-{
-    $mots = preg_split('/\s+/', trim($nom));
-    $initiales = '';
 
-    foreach ($mots as $mot) {
-        $initiales .= strtoupper($mot[0]);
-        if (strlen($initiales) === 2) break;
-    }
-
-    return $initiales;
-}
 ?>

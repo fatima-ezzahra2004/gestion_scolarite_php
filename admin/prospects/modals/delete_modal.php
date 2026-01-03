@@ -11,7 +11,7 @@
         <div class="flex justify-end gap-3">
             <button
                 type="button"
-                onclick="closeModals('modalDelete')"
+                onclick="closeDelete('modalDelete')"
                 class="px-4 py-2 border rounded">
                 Annuler
             </button>

@@ -20,21 +20,12 @@
         class="w-full border rounded-lg px-3 py-2">
     <option value="">-- Choisir --</option>
 
-    <option value="Préscolaire">Préscolaire</option>
-    <option value="Primaire">Primaire</option>
-    <option value="Collège">Collège</option>
-    <option value="Lycée">Lycée</option>
-
-    <option value="Enseignement supérieur">Enseignement supérieur</option>
-    <option value="Professionnelle">Professionnelle</option>
-
     <option value="Licence">Licence</option>
     <option value="Master">Master</option>
-    <option value="Certificat">Certificat</option>
-    <option value="Formation continue">Formation continue</option>
+    <option value="Certificat">Téchnicien Spécialisé</option>
+    <option value="Formation continue">Formation</option>
 </select>
-
-                </div>
+            </div>
 
                 <div>
                     <label class="text-sm text-gray-600">Nom</label>
@@ -44,17 +35,10 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="text-sm text-gray-600">Date début</label>
-                        <input type="date" name="date_debut" required
+                        <label class="text-sm text-gray-600">Duree</label>
+                        <input type="text" name="duree" required
                                class="w-full border rounded-lg px-3 py-2">
                     </div>
-
-                    <div>
-                        <label class="text-sm text-gray-600">Date fin</label>
-                        <input type="date" name="date_fin" required
-                               class="w-full border rounded-lg px-3 py-2">
-                    </div>
-                </div>
 
             </div>
 

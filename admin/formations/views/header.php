@@ -3,7 +3,7 @@
     <!-- Ligne 1 : Titre + bouton -->
     <div class="flex items-start justify-between mb-4 mt-6">
         <div>
-            <h1 class="text-xl font-semibold text-gray-900">Prospects</h1>
+            <h1 class="text-xl font-semibold text-gray-900">Formations</h1>
             <p class="text-sm text-gray-500">
                 Gérez vos Formations 
             </p>

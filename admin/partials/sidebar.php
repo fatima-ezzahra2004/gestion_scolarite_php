@@ -25,12 +25,12 @@
             Formations
         </a>
 
-        <a href="groupes.php">
+        <a href="../groupes/groupes.php">
             <i class="fa-solid fa-users"></i>
             Groupes
         </a>
 
-        <a href="matieres.php">
+        <a href="../matieres/matieres.php">
             <i class="fa-solid fa-book"></i>
             Matières
         </a>

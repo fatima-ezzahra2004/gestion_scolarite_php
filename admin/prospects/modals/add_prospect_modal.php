@@ -9,7 +9,7 @@
         <!-- Header -->
         <div class="flex justify-between items-center border-b pb-3 mb-4">
             <h2 class="text-lg font-semibold">Ajouter un prospect :</h2>
-            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+            <button onclick="closeAddProspectModal()" class="text-gray-400 hover:text-gray-600">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -60,13 +60,7 @@
         ?>
     </select>
 
-    <!-- ✅ Civilité -->
-    <select name="civilite" class="input" required>
-        <option value="">-- Civilité --</option>
-        <option value="Monsieur">Monsieur</option>
-        <option value="Madame">Madame</option>
-        <option value="Mademoiselle">Mademoiselle</option>
-    </select>
+    
 
     <!-- ✅ État -->
     <select name="id_etat" class="input">
@@ -145,7 +139,7 @@
             <!-- Footer -->
             <div class="flex justify-end gap-3 pt-6 border-t">
                 <button type="button"
-                        onclick="closeModal()"
+                        onclick="closeAddProspectModal()"
                         class="px-4 py-2 border rounded-md text-sm hover:bg-gray-50">
                     Fermer
                 </button>

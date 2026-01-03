@@ -23,6 +23,7 @@
                      <?= filtreColor($f['type_formation']) ?>">
             <?= htmlspecialchars($f['type_formation']) ?>
         </span>
+        
 
       <!-- MENU 3 POINTS -->
 <div class="relative">
@@ -83,9 +84,7 @@
 
     <div class="flex items-center gap-2 text-sm text-gray-500 mt-2">
         <i class="fa-regular fa-calendar"></i>
-        <?= date('d/m/Y', strtotime($f['date_debut'])) ?>
-        -
-        <?= date('d/m/Y', strtotime($f['date_fin'])) ?>
+        <?= htmlspecialchars($f['duree']) ?>
     </div>
 
     <div class="border-t my-5"></div>

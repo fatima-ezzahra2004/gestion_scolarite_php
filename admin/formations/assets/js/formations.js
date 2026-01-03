@@ -33,14 +33,24 @@ document.getElementById('addFormationForm')
 });
 function openEditFormation(id) {
     fetch('ajax/get_formation_json.php?id=' + id)
-        .then(r => r.json())
+        .then(response => response.json())
         .then(d => {
-            edit_id.value = d.id_formation;
-            edit_nom.value = d.nom;
-            edit_type.value = d.type_formation;
+
+            // Sécurité : si aucune donnée
+            if (!d) return;
+
+            document.getElementById('edit_id').value = d.id_formation;
+            document.getElementById('edit_nom').value = d.nom;
+            document.getElementById('edit_type').value = d.type_formation;
+            document.getElementById('edit_duree').value = d.duree;
+
             openModal('modalEditFormation');
+        })
+        .catch(err => {
+            console.error('Erreur chargement formation', err);
         });
 }
+
 
 function openDetailsFormation(id) {
     fetch('ajax/get_formation.php?id=' + id)

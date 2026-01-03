@@ -5,7 +5,7 @@
     <div class="bg-white rounded-xl w-[700px] p-6 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Modifier le prospect</h2>
-            <button onclick="closeModals('modalEdit')">✕</button>
+            <button onclick="closeEdit('modalEdit')">✕</button>
         </div>
 
         <form id="editForm" class="grid grid-cols-2 gap-4">
@@ -29,13 +29,7 @@
                 <option value="F">Féminin</option>
             </select>
 
-            <select name="civilite" id="edit_civilite" class="input">
-                <option value="">-- Civilité --</option>
-                <option value="Monsieur">Monsieur</option>
-                <option value="Madame">Madame</option>
-                <option value="Mademoiselle">Mademoiselle</option>
-            </select>
-
+          
             <input type="date" name="date_naissance" id="edit_date_naissance" class="input">
 
             <select name="id_canal" id="edit_canal" class="input">
@@ -69,10 +63,24 @@
             <textarea name="adresse" id="edit_adresse"
                       class="input col-span-2"
                       placeholder="Adresse"></textarea>
+     <!-- TUTEUR -->
+<div class="col-span-2 mt-4 font-semibold">Parent / Tuteur</div>
+
+<input name="tuteur_nom" id="edit_tuteur_nom" class="input" placeholder="Nom tuteur">
+<input name="tuteur_prenom" id="edit_tuteur_prenom" class="input" placeholder="Prénom tuteur">
+
+<input name="tuteur_tel" id="edit_tuteur_tel" class="input" placeholder="Téléphone tuteur">
+
+<select name="lien_parente" id="edit_lien_parente" class="input">
+<option value="">-- Lien de parenté --</option>
+                            <option value="Père">Père</option>
+                            <option value="Mère">Mère</option>
+                            <option value="Tuteur">Tuteur</option>
+</select>
 
             <div class="col-span-2 flex justify-end gap-3 mt-4">
                 <button type="button"
-                        onclick="closeModals('modalEdit')"
+                        onclick="closeEdit('modalEdit')"
                         class="px-4 py-2 border rounded">
                     Annuler
                 </button>

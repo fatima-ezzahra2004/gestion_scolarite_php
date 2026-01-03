@@ -3,26 +3,41 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_general_ci;
 
 USE gestion_scolarite;
-
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
+
     nom VARCHAR(100) NOT NULL,
     prenom VARCHAR(100) NOT NULL,
+    nom_ar VARCHAR(100),
+    prenom_ar VARCHAR(100),
+
     email VARCHAR(150) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
 
+    cin VARCHAR(20) UNIQUE,
+    telephone VARCHAR(20),
+    whatsapp VARCHAR(20),
+    adresse VARCHAR(255),
+    ville VARCHAR(100),
+    ville_ar VARCHAR(100),
+
+    date_naissance DATE,
+    nationalite VARCHAR(100),
+    genre ENUM('M','F'),
+
+
     role ENUM(
         'admin',
-        'agent',
+        'secretaire',
         'enseignant',
-        'etudiant',
-        'parent'
-    ) NOT NULL DEFAULT 'agent',
+        'etudiant'
+    ) NOT NULL,
 
     reset_token VARCHAR(255),
     token_expire DATETIME,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE employes (
@@ -107,7 +122,6 @@ CREATE TABLE employes (
     genre ENUM('M','F') NOT NULL,
     civilite ENUM('Monsieur','Madame','Mademoiselle') NOT NULL,
     date_naissance DATE NULL,
-    nationalite VARCHAR(100) NULL,
 
     id_tuteur INT NULL,
     id_source INT NULL,
@@ -167,7 +181,7 @@ CREATE TABLE employes (
     cin VARCHAR(20) NOT NULL UNIQUE,
     telephone VARCHAR(20) NULL,
     whatsapp VARCHAR(20) NULL,
-    email VARCHAR(120) NULL,
+    email VARCHAR(120) NULL UNIQUE,
     lien_parente VARCHAR(50) NULL,
 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -217,28 +231,31 @@ CREATE TABLE groupes (
 📘 TABLE : etudiants
 CREATE TABLE etudiants (
     id_etudiant INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100) NOT NULL,
-    prenom VARCHAR(100) NOT NULL,
-    nom_ar VARCHAR(100),
-    prenom_ar VARCHAR(100),
-    telephone VARCHAR(20),
-    whatsapp VARCHAR(20),
-    email VARCHAR(120) UNIQUE,
-    cin VARCHAR(20) UNIQUE,
-    adresse VARCHAR(255),
-    ville VARCHAR(100),
-    ville_ar VARCHAR(100),
-    genre ENUM('M','F') NOT NULL,
-    civilite ENUM('Monsieur','Madame','Mademoiselle') NOT NULL,
-    date_naissance DATE,
-    nationalite VARCHAR(100),
+
+    user_id INT NOT NULL,
+
+    niveau_etude VARCHAR(100) NOT NULL,
+   
+
+    pdf_cin VARCHAR(255),
+    pdf_profil VARCHAR(255),
+    diplome_scan VARCHAR(255),
+
     id_tuteur INT,
+
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME NULL,
 
-    FOREIGN KEY (id_tuteur) REFERENCES tuteurs(id_tuteur)
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_tuteur)
+        REFERENCES tuteurs(id_tuteur)
         ON DELETE SET NULL
 );
+
 
 📘 TABLE : formation_matiere
 CREATE TABLE formation_matiere (

@@ -4,22 +4,20 @@ require_once '../../../config.php';
 if (
     empty($_POST['type_formation']) ||
     empty($_POST['nom']) ||
-    empty($_POST['date_debut']) ||
-    empty($_POST['date_fin'])
+    empty($_POST['duree']) 
 ) {
     exit('Champs manquants');
 }
 
 $stmt = $pdo->prepare("
-    INSERT INTO formations (type_formation, nom, date_debut, date_fin)
-    VALUES (:type, :nom, :debut, :fin)
+    INSERT INTO formations (type_formation, nom, duree)
+    VALUES (:type, :nom, :duree)
 ");
 
 $ok = $stmt->execute([
     ':type'  => $_POST['type_formation'],
     ':nom'   => $_POST['nom'],
-    ':debut' => $_POST['date_debut'],
-    ':fin'   => $_POST['date_fin'],
+    ':duree' => $_POST['duree'],
 ]);
 
 echo $ok ? 'ok' : 'Erreur insertion';

@@ -23,7 +23,7 @@ require_once '../../config.php';
 
     if ($tuteur) {
         $id_tuteur = $tuteur['id_tuteur'];
-        $_SESSION['alert'] = "⚠️ Le tuteur existait déjà et a été lié automatiquement.";
+        $_SESSION['alert'] = "Le tuteur existait déjà et a été lié automatiquement.";
     } else {
         $stmt = $pdo->prepare("
             INSERT INTO tuteurs
@@ -53,13 +53,13 @@ $stmt = $pdo->prepare("
 INSERT INTO prospects
 (
     nom, prenom, telephone, whatsapp, email, cin, adresse, ville,
-    genre, civilite, date_naissance, nationalite,
+    genre, date_naissance, nationalite,
     id_source, id_canal, id_etat, id_tuteur, created_at
 )
 VALUES
 (
     :nom, :prenom, :telephone, :whatsapp, :email, :cin, :adresse, :ville,
-    :genre, :civilite, :date_naissance, :nationalite,
+    :genre, :date_naissance, :nationalite,
     :id_source, :id_canal, :id_etat, :id_tuteur, NOW()
 )
 ");
@@ -74,7 +74,6 @@ $stmt->execute([
     ':adresse'        => $_POST['adresse'] ?? null,
     ':ville'          => $_POST['ville'] ?? null,
     ':genre'          => $_POST['genre'],
-    ':civilite'       => $_POST['civilite'],
     ':date_naissance' => $_POST['date_naissance'] ?? null,
     ':nationalite'    => $_POST['nationalite'] ?? null,
     ':id_source'      => $_POST['id_source'] ?? null,

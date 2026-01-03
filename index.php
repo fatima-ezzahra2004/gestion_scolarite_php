@@ -1,4 +1,5 @@
 <?php
+
 require 'config.php';
 
 $message = "";
@@ -11,18 +12,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($email && $password) {
 
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+        $stmt = $pdo->prepare("
+            SELECT id, nom, prenom, role, password
+            FROM users
+            WHERE email = :email
+        ");
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
 
-            // 🔐 Sessions
+            // 🔐 Sessions sécurisées
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['nom']     = $user['nom'];
             $_SESSION['role']    = $user['role'];
 
-            // 🚦 Redirection selon le rôle
+            // 🚦 Redirection selon rôle
             switch ($user['role']) {
                 case 'admin':
                     header("Location: admin/dashboard/dashboard.php");
@@ -52,7 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -68,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Partie gauche -->
     <div class="auth-left">
         <h1>EduManager</h1>
-        <p>Accédez à votre tableau de bord</p>
+        <p>Connexion sécurisée</p>
     </div>
 
     <!-- Partie droite -->
@@ -76,7 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <form class="auth-card" method="POST">
 
             <h2>Connexion</h2>
-           
 
             <?php if (!empty($message)): ?>
                 <p class="message <?= $type ?>"><?= $message ?></p>
@@ -95,8 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <button type="submit">Se connecter</button>
 
             <div class="auth-links">
-                <a href="forgot_password.php">Mot de passe oublié ?</a><br>
-                <a href="register.php">Créer un compte</a>
+                <a href="forgot_password.php">Mot de passe oublié ?</a>
             </div>
 
         </form>

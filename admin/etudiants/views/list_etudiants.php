@@ -69,37 +69,47 @@
                     bg-white rounded-xl shadow-lg border
                     py-2 z-30">
 
-            <button onclick="openDetails(<?= $e['id_etudiant'] ?>)"
+                    <?php if ($view === 'trash'): ?>
+            <!-- MODE HISTORIQUE -->
+            <button
+                type="button"
+                onclick="openRestoreEtudiantModal(<?= (int)$e['id_etudiant'] ?>)"
+                class="block w-full text-left px-4 py-2
+                       text-green-600 hover:bg-green-50 rounded-xl">
+                <i class="fa-solid fa-rotate-left text-xs mr-2"></i>
+                Restaurer
+            </button>
+        <?php else: ?>
+            <!-- MODE NORMAL -->
+          <button onclick="openDetailsEtudiant(<?= $e['id_etudiant'] ?>)"
                     class="w-full text-left px-4 py-2
                            text-sm text-gray-700
                            hover:bg-gray-100 rounded-md">
                 Voir profil
             </button>
 
-            <button onclick="openEdit(<?= $e['id_etudiant'] ?>)"
+            <button onclick="openEditEtudiant(<?= $e['id_etudiant'] ?>)"
                     class="w-full text-left px-4 py-2
                            text-sm text-gray-700
                            hover:bg-gray-100 rounded-md">
                 Modifier
             </button>
 
-            <button onclick="openHistory(<?= $e['id_etudiant'] ?>)"
-                    class="w-full text-left px-4 py-2
-                           text-sm text-gray-700
-                           hover:bg-gray-100 rounded-md">
-                Historique
-            </button>
 
-            <!-- BOUTON ORANGE -->
-            <div class="px-3 pt-2">
-                <button onclick="openArchive(<?= $e['id_etudiant'] ?>)"
+            <div class="border-t"></div>
+
+             <div class="px-3 pt-2">
+                <button onclick="openDeleteEtudiant(<?= $e['id_etudiant'] ?>)"
                         class="w-full text-sm font-medium
-                               bg-orange-400 hover:bg-orange-500
+                               bg-red-400 hover:bg-red-500
                                text-white rounded-lg
                                py-2 transition">
-                    Archiver
+                    Supprimer
                 </button>
             </div>
+
+        <?php endif; ?>
+
         </div>
     </div>
 </div>

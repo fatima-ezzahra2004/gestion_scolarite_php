@@ -9,11 +9,13 @@ $stmt = $pdo->prepare("
     SELECT p.*,
            t.nom AS tuteur_nom,
            t.prenom AS tuteur_prenom,
-           t.telephone AS tuteur_tel
+           t.telephone AS tuteur_tel,
+           t.lien_parente
     FROM prospects p
     LEFT JOIN tuteurs t ON p.id_tuteur = t.id_tuteur
     WHERE p.id_prospect = ?
 ");
+
 $stmt->execute([$_GET['id']]);
 $p = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -60,6 +62,13 @@ if (!$p) {
                 <?= htmlspecialchars($p['prenom'] ?? '-') ?>
             </p>
         </div>
+<!-- CIN -->
+<div>
+    <p class="text-gray-500 text-xs mb-1">CIN</p>
+    <p class="font-medium text-gray-900">
+        <?= htmlspecialchars($p['cin'] ?? '-') ?>
+    </p>
+</div>
 
         <!-- Téléphone -->
         <div>
@@ -102,6 +111,15 @@ if (!$p) {
                     : '-' ?>
             </p>
         </div>
+<!-- Date de création -->
+<div>
+    <p class="text-gray-500 text-xs mb-1">Date de création</p>
+    <p class="font-medium text-gray-900">
+        <?= !empty($p['created_at'])
+            ? date('d/m/Y H:i', strtotime($p['created_at']))
+            : '-' ?>
+    </p>
+</div>
 
     </div>
 </div>
@@ -115,7 +133,14 @@ if (!$p) {
 
     <?php if (!empty($p['tuteur_nom'])): ?>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+<div>
+    <p class="text-gray-500 text-xs mb-1">Lien de parenté</p>
+    <p class="font-medium text-gray-900">
+        <?= htmlspecialchars($p['lien_parente'] ?? '-') ?>
+    </p>
+</div>
+
 
             <div>
                 <p class="text-gray-500 text-xs mb-1">Nom du tuteur</p>
