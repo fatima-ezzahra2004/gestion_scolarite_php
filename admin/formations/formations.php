@@ -53,9 +53,12 @@ include 'modals/details_formation_modal.php';
 include 'modals/edit_formation_modal.php';
 include 'modals/delete_modal.php';
 include 'modals/restore_modal.php'; 
+include 'modals/force_delete_modal.php'; 
 
 ?>
 <script src="assets/js/formations.js"></script>
+<script src="assets/js/alert.js"></script>
+
 
 
 </body>

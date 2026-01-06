@@ -1,19 +1,17 @@
 <?php
 require_once '../../../config.php';
 
-$id = (int)($_GET['id'] ?? 0);
 
-$stmt = $pdo->prepare("
-    SELECT 
-        id_formation,
-        nom,
-        type_formation,
-        duree
-    FROM formations
-    WHERE id_formation = :id
-");
+if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
+    echo json_encode(null);
+    exit;
+}
 
+$id = (int) $_GET['id'];
 
+$stmt = $pdo->prepare("SELECT id_groupe, id_formation, nom_fr, nom_ar, effectif_max 
+                       FROM groupes WHERE id_groupe = :id LIMIT 1");
 $stmt->execute(['id' => $id]);
+$groupe = $stmt->fetch(PDO::FETCH_ASSOC);
 
-echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
+echo json_encode($groupe);

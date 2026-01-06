@@ -1,19 +1,17 @@
 <?php
 require_once '../../../config.php';
 
-$id = (int)($_GET['id'] ?? 0);
+header('Content-Type: application/json');
 
-$stmt = $pdo->prepare("
-    SELECT 
-        id_formation,
-        nom,
-        type_formation,
-        duree
-    FROM formations
-    WHERE id_formation = :id
-");
+if(!isset($_GET['id']) || !is_numeric($_GET['id'])){
+    echo json_encode(null);
+    exit;
+}
 
+$id = (int)$_GET['id'];
 
-$stmt->execute(['id' => $id]);
+$stmt = $pdo->prepare("SELECT id_formation, nom, type_formation, duree FROM formations WHERE id_formation = :id");
+$stmt->execute(['id'=>$id]);
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-echo json_encode($stmt->fetch(PDO::FETCH_ASSOC));
+echo json_encode($data);

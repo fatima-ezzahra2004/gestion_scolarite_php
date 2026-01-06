@@ -49,16 +49,29 @@ $formations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </main>
 </div>
  <?php
+
+include 'modals/add.php';
+include 'modals/edit.php';
+include 'modals/delete.php';
+include 'modals/restore_modal.php'; 
+include 'modals/force_delete_matiere.php';  
+
+
+
 include 'modals/add_matiere_modal.php';
 include 'modals/details_matiere_modal.php';
 include 'modals/edit_matiere_modal.php';
 include 'modals/delete_modal.php';
 include 'modals/formations_matiere_modal.php'; 
 
-include 'modals/restore_modal.php'; 
 
 ?>
-<script type="module" src="assets/js/matieres.js"></script>
+<script>
+
+</script>
+
+<script src="assets/js/matieres.js"></script>
+<script src="assets/js/alert.js"></script>
 
 
 </body>

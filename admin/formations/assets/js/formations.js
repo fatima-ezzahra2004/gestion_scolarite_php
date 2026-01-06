@@ -1,122 +1,229 @@
+
+// ==========================
+// TOGGLE MENU
+// ==========================
 function toggleMenu(id) {
-    document.querySelectorAll('[id^="menu-"]').forEach(m => {
-        if (m.id !== 'menu-' + id) m.classList.add('hidden');
+    // نخفي جميع القوائم الأخرى
+    document.querySelectorAll('[id^="menu-"]').forEach(menu => {
+        if (menu.id !== 'menu-' + id) menu.classList.add('hidden');
     });
-    document.getElementById('menu-' + id).classList.toggle('hidden');
+
+    // نعرض/نخفي القائمة المطلوبة
+    const menu = document.getElementById('menu-' + id);
+    if (menu) menu.classList.toggle('hidden');
 }
 
+// ==========================
+// FONCTIONS GENERALES POUR MODAL
+// ==========================
 function openModal(id) {
-    document.getElementById(id).classList.remove('hidden');
-    document.getElementById(id).classList.add('flex');
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
 }
 
 function closeModal(id) {
-    document.getElementById(id).classList.add('hidden');
-    document.getElementById(id).classList.remove('flex');
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
 }
-/* =========================
-   OUVRIR MODAL AJOUT
-========================= */
+
+// ==========================
+// AJOUT FORMATION
+// ==========================
 function openAddFormationModal() {
+    
+    document.querySelectorAll('[id^="menu-"]').forEach(menu => menu.classList.add('hidden'));
+
     openModal('addFormationModal');
 }
-document.getElementById('addFormationForm')
-?.addEventListener('submit', function (e) {
+
+document.getElementById('addFormationForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     fetch('ajax/add_formation.php', {
         method: 'POST',
         body: new FormData(this)
-    }).then(r => r.text()).then(resp => {
+    })
+    .then(r => r.text())
+    .then(resp => {
         if (resp.trim() === 'ok') location.reload();
         else alert(resp);
-    });
+    })
+    .catch(() => alert('Erreur ajout formation'));
 });
-function openEditFormation(id) {
-    fetch('ajax/get_formation_json.php?id=' + id)
-        .then(response => response.json())
-        .then(d => {
 
-            // Sécurité : si aucune donnée
-            if (!d) return;
-
-            document.getElementById('edit_id').value = d.id_formation;
-            document.getElementById('edit_nom').value = d.nom;
-            document.getElementById('edit_type').value = d.type_formation;
-            document.getElementById('edit_duree').value = d.duree;
-
-            openModal('modalEditFormation');
-        })
-        .catch(err => {
-            console.error('Erreur chargement formation', err);
-        });
-}
-
-
-function openDetailsFormation(id) {
-    fetch('ajax/get_formation.php?id=' + id)
-        .then(r => r.text())
-        .then(html => {
-            detailsContent.innerHTML = html;
-            openModal('modalDetailsFormation');
-        });
-}
-
-
-
-
+// ==========================
+// SUPPRESSION FORMATION
+// ==========================
 let deleteFormationId = null;
 
-/* =========================
-   OUVRIR MODAL DELETE
-========================= */
 function confirmDelete(id) {
+   
+    document.querySelectorAll('[id^="menu-"]').forEach(menu => menu.classList.add('hidden'));
+
     deleteFormationId = id;
     openModal('modalDelete');
 }
 
-/* =========================
-   CONFIRMER SUPPRESSION
-========================= */
-document.getElementById('btnDeleteConfirm')
-?.addEventListener('click', function () {
-
+document.getElementById('btnDeleteConfirm')?.addEventListener('click', function() {
     if (!deleteFormationId) return;
 
     fetch('ajax/delete_formation.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'id=' + encodeURIComponent(deleteFormationId)
     })
-    .then(res => res.text())
+    .then(res => res.json())
     .then(resp => {
-
         closeModal('modalDelete');
         deleteFormationId = null;
+        if (resp.success) location.reload();
+        else alert(resp.message || 'Erreur suppression formation');
+    })
+    .catch(() => alert('Erreur suppression formation'));
+});
+// ==========================
+// EDIT FORMATION
+// ==========================
+function openModal(id) {
+    const modal = document.getElementById(id);
+    if(modal){
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+}
 
-        if (resp.trim() === 'deleted') {
-            location.reload();
+function closeModal(id) {
+    const modal = document.getElementById(id);
+    if(modal){
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+}
+
+// ==========================
+// EDIT FORMATION
+// ==========================
+function openEditFormation(id){
+   
+    document.querySelectorAll('[id^="menu-"]').forEach(menu => menu.classList.add('hidden'));
+
+    fetch('ajax/get_formation_json.php?id=' + id)
+    .then(res => res.json())
+    .then(data => {
+        if(!data){
+            alert("Formation introuvable");
+            return;
+        }
+
+        // remplir les champs
+        document.getElementById('edit_id').value = data.id_formation;
+        document.getElementById('edit_nom').value = data.nom;
+        document.getElementById('edit_type').value = data.type_formation;
+        document.getElementById('edit_duree').value = data.duree;
+
+        // ouvrir le modal
+        openModal('modalEditFormation');
+    })
+    .catch(err=>{
+        console.error(err);
+        alert("Erreur chargement formation");
+    });
+}
+
+// Ajax submit pour la modification
+document.querySelector('#modalEditFormation form')?.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this)
+    })
+    .then(res => res.text())
+    .then(resp=>{
+        if(resp.trim() === 'ok'){
+            location.reload(); // reload page après modification
         } else {
             alert(resp);
         }
     })
-    .catch(() => {
-        alert('Erreur suppression formation');
+    .catch(()=>{
+        alert("Erreur mise à jour formation");
     });
 });
+
+
+
+// ==========================
+// RESTAURER FORMATION
+
+let restoreId = null;
+
 function openRestoreModal(id) {
+    restoreId = id; 
+    document.querySelectorAll('[id^="menu-"]').forEach(menu => menu.classList.add('hidden'));
+    document.getElementById('restoreformation').classList.remove('hidden');
+}
+
+function closeRestoreformationModal() {
+    restoreId = null;
+    document.getElementById('restoreformation').classList.add('hidden');
+}
+
+
+function confirmRestoreformation() {
+    if (!restoreId) return;
+
     fetch('ajax/restore_formation.php', {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        body: 'id=' + id
+        body: 'id=' + encodeURIComponent(restoreId)
     })
-    .then(res => res.text())
+    .then(res => res.json())
     .then(resp => {
-        if (resp.trim() === 'restored') {
+        if (resp.success) {
+            location.reload(); // nreloadi page mli t3adet
+        } else {
+            alert(resp.message || 'Erreur restauration');
+        }
+    })
+    .catch(() => alert('Erreur restauration formation'))
+    .finally(() => closeRestoreformationModal());
+}
+
+let deleteDefFormationId = null;
+
+function openDeleteDefFormation(id){
+    deleteDefFormationId = id;
+    document.getElementById('deleteDefFormationModal').classList.remove('hidden');
+}
+
+function closeDeleteDefFormation(){
+    deleteDefFormationId = null;
+    document.getElementById('deleteDefFormationModal').classList.add('hidden');
+}
+
+function confirmDeleteDefFormation(){
+    if(!deleteDefFormationId) return alert('ID invalide');
+    console.log("SENDING ID =", deleteDefFormationId);
+
+    fetch('ajax/force_delete_modal.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: 'id=' + deleteDefFormationId
+    })
+    .then(r => r.json())
+    .then(resp => {
+        if(resp.success){
+            closeDeleteDefFormation();
             location.reload();
         } else {
-            alert(resp);
+            alert(resp.message || 'Erreur suppression formation');
         }
-    });
+    })
+    .catch(()=> alert('Erreur serveur'));
 }

@@ -40,7 +40,7 @@
 
     <div>
         <label class="text-sm text-gray-600">Duree</label>
-        <input type="date" id="edit_duree" name="date_debut" required
+        <input type="text" id="edit_duree" name="date_debut" required
                class="w-full border rounded-lg px-3 py-2">
     </div>
 

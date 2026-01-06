@@ -58,13 +58,14 @@ $formations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
  <?php
 include 'modals/add_groupe_modal.php';
-include 'modals/details_groupe_modal.php';
 include 'modals/edit_groupe_modal.php';
 include 'modals/delete_modal.php';
 include 'modals/restore_modal.php'; 
+include 'modals/force_delete_groupe.php'; 
 
 ?>
-<script type="module" src="assets/js/groupes.js"></script>
+
+<script src="assets/js/groupes.js"></script>
 
 
 </body>

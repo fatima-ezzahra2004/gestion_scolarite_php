@@ -1,198 +1,219 @@
-import { showModal, hideModal } from './ui.js';
 
-let deleteGroupeId = null;
-let restoreGroupeId = null;
+let deleteId = null;
 
-/* =========================
-   DETAILS GROUPE
-========================= */
-window.openDetailsGroupe = function (id) {
-    fetch(`ajax/get_groupe.php?id=${id}`)
-        .then(r => r.text())
-        .then(html => {
-            document.getElementById('detailsContent').innerHTML = html;
-            showModal('modalDetails');
-        });
-};
-
-window.closeDetailsGroupe = function () {
-    hideModal('modalDetails');
-};
-
-/* =========================
-   EDIT GROUPE
-========================= */
-window.openEditGroupe = function (id) {
-    fetch(`ajax/get_groupe_json.php?id=${id}`)
-        .then(r => r.json())
-        .then(g => {
-            if (!g) return alert('Groupe introuvable');
-
-            const map = {
-                edit_id_groupe: g.id_groupe,
-                edit_nom_fr: g.nom_fr,
-                edit_nom_ar: g.nom_ar,
-                edit_effectif_max: g.effectif_max,
-                edit_id_formation: g.id_formation
-            };
-
-            Object.entries(map).forEach(([id, val]) => {
-                const el = document.getElementById(id);
-                if (el) el.value = val ?? '';
-            });
-
-            showModal('modalEditGroupe');
-        });
-};
-
-window.closeEditGroupe = function () {
-    hideModal('modalEditGroupe');
-};
-
-/* =========================
-   DELETE GROUPE
-========================= */
-window.confirmDeleteGroupe = function (id) {
-    deleteGroupeId = id;
-    showModal('modalDelete');
-};
-
-window.closeDeleteGroupe = function () {
-    deleteGroupeId = null;
-    hideModal('modalDelete');
-};
-
-document.getElementById('btnDeleteConfirm')?.addEventListener('click', () => {
-    if (!deleteGroupeId) return;
-
-    fetch('ajax/delete_groupe.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `id=${deleteGroupeId}`
-    })
-    .then(() => {
-        hideModal('modalDelete');
-        location.reload();
+// Menu 3 points
+function toggleMenu(id){
+    document.querySelectorAll('[id^="menu-"]').forEach(m => {
+        if(m.id !== 'menu-'+id) m.classList.add('hidden');
     });
+    document.getElementById('menu-'+id).classList.toggle('hidden');
+}
+
+
+document.addEventListener('click', e => {
+    if(!e.target.closest('.relative')){
+        document.querySelectorAll('[id^="menu-"]').forEach(m => m.classList.add('hidden'));
+    }
+});
+
+function openModal(id){
+    const modal = document.getElementById(id);
+    if(modal){
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+}
+
+function closeModal(id){
+    const modal = document.getElementById(id);
+    if(modal){
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+    deleteId = null;
+}
+
+
+/* ======= AJAX ADD MATIERE ======= */
+
+function openAddMatiereModal() {
+    const modal = document.getElementById('addMatiereModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex'); 
+    }
+}
+
+
+function closeAddMatiereModal() {
+    const modal = document.getElementById('addMatiereModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+}
+
+
+document.getElementById('addMatiereForm')?.addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('ajax/add.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.text())
+    .then(res => {
+        
+        location.reload();
+    })
+    .catch(() => location.reload());
+});
+
+
+
+
+//////////////////////////////modifer
+// Ouvrir / fermer modal
+function openEditMatiereModal(id) {
+    const modal = document.getElementById('editMatiereModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    
+    fetch('ajax/get_matiere.php?id=' + id)
+        .then(r => r.json())
+        .then(data => {
+            if(!data) return alert('Matière introuvable');
+            document.getElementById('edit_id_matiere').value = data.id_matiere;
+            document.getElementById('edit_nom_fr').value = data.nom_fr;
+            document.getElementById('edit_nom_ar').value = data.nom_ar;
+            document.getElementById('edit_description').value = data.description;
+        });
+}
+
+function closeEditMatiereModal() {
+    const modal = document.getElementById('editMatiereModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+
+document.getElementById('editMatiereForm')?.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    let formData = new FormData(this);
+
+    fetch('ajax/edit.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.text())
+    .then(res => {
+      
+            
+            closeEditMatiereModal();
+            location.reload(); 
+            
+       
+    })
+    .catch(err => alert('Erreur AJAX'));
+});
+
+//////////delete
+
+
+function confirmDelete(id){
+    deleteId = id;
+    openModal('modalDelete');
+}
+
+//  Confirm delete
+document.getElementById('btnDeleteConfirm')?.addEventListener('click', function(){
+    if(!deleteId) return;
+
+    fetch('ajax/delete.php', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: 'id=' + encodeURIComponent(deleteId)
+    })
+    .then(res => res.text())
+    .then(resp => {
+        closeModal('modalDelete');
+       
+           
+            document.getElementById('row-'+deleteId)?.remove();
+       
+        deleteId = null;
+        location.reload();
+    })
+    .catch(() => alert('Erreur suppression'));
 });
 
 /* =========================
    RESTORE GROUPE
 ========================= */
-window.openRestoreGroupe = function (id) {
-    restoreGroupeId = id;
-    showModal('restoreModal');
-};
+let restoreMatiereId = null;
 
-window.closeRestoreGroupe = function () {
-    restoreGroupeId = null;
-    hideModal('restoreModal');
-};
+// OUVRIR MODAL
+function openRestoreMatiere(id){
+    restoreMatiereId = id;
+    document.getElementById('restoreMatiereModal').classList.remove('hidden');
+}
 
-window.confirmRestoreGroupe = function () {
-    if (!restoreGroupeId) return;
+// FERMER MODAL
+function closeRestoreMatiere(){
+    restoreMatiereId = null;
+    document.getElementById('restoreMatiereModal').classList.add('hidden');
+}
 
-    fetch('ajax/restore_groupe.php', {
+// CONFIRMER RESTORE
+function confirmRestoreMatiere(){
+    if(!restoreMatiereId) return alert('ID invalide');
+
+    fetch('ajax/restore_matiere.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `id=${restoreGroupeId}`
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: 'id=' + restoreMatiereId
     })
-    .then(() => {
-        hideModal('restoreModal');
-        location.reload();
-    });
-};
+    .then(res => res.json())
+    .then(resp => {
+        console.log(resp); // Pour debug
+       
+            closeRestoreMatiere();
+            location.reload();
+        
+    })
+    .catch(() => alert('Erreur connexion ou serveur'));
+}
+//////////////////JS pour modal Supprimer Définitivement
+let deleteDefMatiereId = null;
 
-/* =========================
-   ADD GROUPE
-========================= */
-window.openAddGroupeModal = function () {
-    showModal('addGroupeModal');
-};
+function openDeleteDefMatiere(id){
+    deleteDefMatiereId = id;
+    document.getElementById('deleteDefMatiereModal').classList.remove('hidden');
+}
 
-window.closeAddGroupeModal = function () {
-    hideModal('addGroupeModal');
-};
+function closeDeleteDefMatiere(){
+    deleteDefMatiereId = null;
+    document.getElementById('deleteDefMatiereModal').classList.add('hidden');
+}
 
-document.getElementById('addGroupeForm')?.addEventListener('submit', e => {
-    e.preventDefault();
+function confirmDeleteDefMatiere(){
+    if(!deleteDefMatiereId) return alert('ID invalide');
 
-    const form = e.target;
-    const data = new FormData(form);
-
-    fetch('ajax/add_groupe.php', {
+    fetch('ajax/force_delete_matiere.php', {
         method: 'POST',
-        body: data
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: 'id=' + deleteDefMatiereId
     })
-    .then(r => r.text())
-    .then(res => {
-        if (res.trim() === 'ok') {
-            hideModal('addGroupeModal');
+    .then(r => r.json())
+    .then(resp => {
+        if(resp.success){
+            closeDeleteDefMatiere();
             location.reload();
         } else {
-            alert(res);
+            alert(resp.message || 'Erreur suppression');
         }
-    });
-});
-
-
-
-
-
-
-
-window.removeFormationFromMatiere = function (id) {
-    if (!confirm('Supprimer cette association ?')) return;
-
-    fetch('ajax/delete_formation_matiere.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'id=' + id
-    })
-    .then(() => {
-        document.querySelector('#formationsModal').classList.add('hidden');
     });
 }
-window.openFormationsModal = function (idMatiere, nomMatiere) {
-    const modal = document.getElementById('formationsModal');
-    const title = document.getElementById('formationsModalTitle');
-
-    title.textContent = `Formations associées à "${nomMatiere}"`;
-    showModal('formationsModal');
-     fetch(`ajax/get_formations_by_matiere.php?id_matiere=${idMatiere}`)
-        .then(res => res.text())
-        .then(html => {
-            document.getElementById('formationsModalContent').innerHTML = html;
-        });
-};
-
-window.closeFormationsModal = function () {
-    hideModal('formationsModal');
-};
-
-document.addEventListener('submit', function (e) {
-    if (e.target.id !== 'addFormationForm') return;
-
-    e.preventDefault();
-
-    const form = e.target;
-    const data = new FormData(form);
-
-    fetch('ajax/add_formation_to_matiere.php', {
-        method: 'POST',
-        body: data
-    })
-    .then(r => r.text())
-    .then(res => {
-        if (res.trim() === 'ok') {
-            // recharger le contenu du modal
-            location.reload();
-            openFormationsModal(
-                data.get('id_matiere'),
-                document.getElementById('formationsModalTitle').textContent
-            );
-        } else {
-            alert(res);
-        }
-    });
-});

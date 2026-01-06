@@ -1,10 +1,27 @@
-<?php
-require "../../../config.php";
+<?php 
+require_once '../../../config.php';
 
-$id = $_GET['id'];
+header('Content-Type: application/json');
 
-// supprimer aussi des tables liées
-$pdo->prepare("DELETE FROM formation_matiere WHERE id_matiere=?")->execute([$id]);
-$pdo->prepare("DELETE FROM enseignant_matiere WHERE id_matiere=?")->execute([$id]);
+if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
+    echo json_encode(['success' => false, 'message' => 'ID invalide']);
+    exit;
+}
 
-$pdo->prepare("DELETE FROM matieres WHERE id_matiere=?")->execute([$id]);
+$id = (int) $_POST['id'];
+
+$stmt = $pdo->prepare("
+    UPDATE matieres
+    SET deleted_at = NOW()
+    WHERE id_matiere = :id
+    AND deleted_at IS NULL
+");
+
+$ok = $stmt->execute(['id' => $id]);
+
+if ($stmt->rowCount() > 0) {
+    echo json_encode(['success' => true, 'message' => 'Groupe supprimé']);
+} else {
+    echo json_encode(['success' => false, 'message' => 'Déjà supprimé ou introuvable']);
+} 
+

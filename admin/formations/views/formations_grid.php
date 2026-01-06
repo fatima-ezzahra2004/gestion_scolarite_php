@@ -49,17 +49,17 @@
                 <i class="fa-solid fa-rotate-left text-xs mr-2"></i>
                 Restaurer
             </button>
+               <button
+                type="button"
+                onclick="openDeleteDefFormation(<?= (int)$f['id_formation'] ?>)"
+                class="block w-full text-left px-4 py-2 text-red-700 hover:bg-red-50">
+                Supprimer définitivement
+            </button>
         <?php else: ?>
-            <!-- MODE NORMAL -->
-          <button
-    onclick="openDetailsFormation(<?= (int)$f['id_formation'] ?>)"
-    class="block w-full text-left px-4 py-2 hover:bg-gray-100">
-    Voir détails
-</button>
 
 
            <button
-    onclick="openEditFormation(<?= (int)$f['id_formation'] ?>)"
+    onclick="openEditFormation(<?= $f['id_formation'] ?>)"
     class="block w-full text-left px-4 py-2 hover:bg-gray-100">
     Modifier
 </button>

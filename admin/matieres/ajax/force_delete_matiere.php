@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: application/json');
-require_once '../../../config.php';
+require_once '../../../config.php'; // path correct
 
+// Récupérer l'ID de la matière
 $id = (int)($_POST['id'] ?? 0);
 
 if($id <= 0){
@@ -9,11 +10,12 @@ if($id <= 0){
     exit;
 }
 
-$stmt = $pdo->prepare("UPDATE groupes SET deleted_at = NULL WHERE id_groupe = :id");
+// Supprimer définitivement
+$stmt = $pdo->prepare("DELETE FROM matieres WHERE id_matiere = :id");
 $success = $stmt->execute(['id' => $id]);
 
 if($success){
     echo json_encode(['success' => true]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Impossible de restaurer le groupe']);
+    echo json_encode(['success' => false, 'message' => 'Impossible de supprimer la matière']);
 }

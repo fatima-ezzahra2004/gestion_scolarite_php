@@ -1,12 +1,21 @@
 <?php
+
 require_once '../../../config.php';
+header('Content-Type: application/json');
 
-$id = (int)($_POST['id'] ?? 0);
+if(!isset($_POST['id']) || !is_numeric($_POST['id'])){
+    echo json_encode(['success'=>false,'message'=>'ID invalide']);
+    exit;
+}
 
-$stmt = $pdo->prepare("
-    UPDATE formations
-    SET deleted_at = NULL
-    WHERE id_formation = :id
-");
+$id = (int)$_POST['id'];
 
-echo $stmt->execute(['id'=>$id]) ? 'restored' : 'error';
+
+$stmt = $pdo->prepare("UPDATE formations SET deleted_at = NULL WHERE id_formation = :id");
+$stmt->execute(['id'=>$id]);
+
+if($stmt->rowCount() > 0){
+    echo json_encode(['success'=>true,'message'=>'Formation restaurée']);
+}else{
+    echo json_encode(['success'=>false,'message'=>'Déjà active ou introuvable']);
+}

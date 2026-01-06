@@ -17,14 +17,14 @@
 </button>
 
     <?php if ($view === 'trash'): ?>
-        <a href="formations.php"
+        <a href="groupes.php"
            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg
                   bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium">
             <i class="fa-solid fa-arrow-left"></i>
             Retour
         </a>
     <?php else: ?>
-      <a href="formations.php?view=trash"
+      <a href="groupes.php?view=trash"
 
            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg
                   border border-gray-300 hover:bg-gray-100

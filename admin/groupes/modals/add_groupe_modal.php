@@ -5,7 +5,7 @@
 
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-semibold">Ajouter un groupe</h2>
-            <button onclick="closeAddGroupeModal()">
+            <button onclick="closeModal('addGroupeModal')">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
@@ -14,7 +14,6 @@
 
             <div class="space-y-4">
 
-                <!-- FORMATION -->
                 <div>
                     <label class="text-sm text-gray-600">Formation</label>
                     <select name="id_formation" required
@@ -28,21 +27,18 @@
                     </select>
                 </div>
 
-                <!-- NOM FR -->
                 <div>
                     <label class="text-sm text-gray-600">Nom (FR)</label>
                     <input type="text" name="nom_fr" required
                            class="w-full border rounded-lg px-3 py-2">
                 </div>
 
-                <!-- NOM AR -->
                 <div>
                     <label class="text-sm text-gray-600">Nom (AR)</label>
                     <input type="text" name="nom_ar"
                            class="w-full border rounded-lg px-3 py-2">
                 </div>
 
-                <!-- EFFECTIF -->
                 <div>
                     <label class="text-sm text-gray-600">Effectif maximum</label>
                     <input type="number" name="effectif_max" min="1" required
@@ -52,8 +48,8 @@
             </div>
 
             <div class="flex justify-end gap-2 mt-6">
-                <button
-                    onclick="closeAddGroupeModal()"
+                <button type="button"
+                        onclick="closeModal('addGroupeModal')"
                         class="px-4 py-2 border rounded-lg">
                     Annuler
                 </button>

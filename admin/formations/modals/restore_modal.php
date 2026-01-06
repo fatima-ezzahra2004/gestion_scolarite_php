@@ -1,26 +1,39 @@
-<div id="modalRestore"
-     class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+<!-- ================= MODAL RESTAURER FORMATION ================= -->
+<div id="restoreformation"
+     class="fixed inset-0 bg-black/40 hidden flex items-center justify-center z-50">
 
-    <div class="bg-white rounded-xl w-full max-w-sm p-6 text-center">
+    <div class="bg-white rounded-xl w-full max-w-md p-6 shadow-lg">
 
-        <i class="fa-solid fa-rotate-left text-green-600 text-3xl mb-3"></i>
+        
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold text-gray-900">
+                Restaurer formation
+            </h2>
+            <button onclick="closeRestoreformationModal()"
+                    class="text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
-        <h3 class="font-semibold text-gray-900">
-            Restaurer la formation
-        </h3>
-
-        <p class="text-sm text-gray-500 mt-2">
-            La formation sera de nouveau active.
+        <!-- Body -->
+        <p class="text-sm text-gray-600 mb-6">
+            Voulez-vous vraiment restaurer cette formation ?
         </p>
 
-        <div class="flex justify-center gap-3 mt-6">
-            <button onclick="closeModal('modalRestore')"
-                    class="px-4 py-2 border rounded-lg">
+        <!-- Footer -->
+        <div class="flex justify-end gap-3">
+            <button
+                type="button"
+                onclick="closeRestoreformationModal()"
+                class="px-4 py-2 border rounded-md text-sm hover:bg-gray-50">
                 Annuler
             </button>
 
-            <button id="btnRestoreConfirm"
-                    class="px-4 py-2 bg-green-600 text-white rounded-lg">
+            <button
+                type="button"
+                onclick="confirmRestoreformation()"
+                class="px-4 py-2 bg-green-600 hover:bg-green-700
+                       text-white rounded-md text-sm font-medium">
                 Restaurer
             </button>
         </div>

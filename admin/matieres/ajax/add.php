@@ -2,7 +2,6 @@
 require_once '../../../config.php';
 
 if (
-    empty($_POST['id']) ||
     empty($_POST['nom_fr']) ||
     empty($_POST['nom_ar']) ||
     empty($_POST['description'])
@@ -11,18 +10,14 @@ if (
 }
 
 $stmt = $pdo->prepare("
-    UPDATE matieres SET
-        nom_fr = :nom_fr,
-        nom_ar = :nom_ar,
-        description = :description
-    WHERE id_matiere = :id
+    INSERT INTO matieres (nom_fr, nom_ar, description)
+    VALUES (:nom_fr, :nom_ar, :description)
 ");
 
 $ok = $stmt->execute([
     ':nom_fr'     => $_POST['nom_fr'],
     ':nom_ar'     => $_POST['nom_ar'],
     ':description' => $_POST['description'],
-    ':id'        => $_POST['id']
 ]);
 
-echo $ok ? 'ok' : 'Erreur';
+echo $ok ? 'ok' : 'Erreur insertion';

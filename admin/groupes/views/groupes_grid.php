@@ -77,13 +77,14 @@
                                 <i class="fa-solid fa-rotate-left text-xs mr-2"></i>
                                 Restaurer
                             </button>
+                        <button
+                            type="button"
+                            onclick="openDeleteDefGroupe(<?= (int)$g['id_groupe'] ?>)"
+                            class="block w-full text-left px-4 py-2 text-red-700 hover:bg-red-50">
+                            Supprimer définitivement
+                        </button>
                         <?php else: ?>
-                            <!-- MODE NORMAL -->
-                            <button
-                                onclick="openDetailsGroupe(<?= (int)$g['id_groupe'] ?>)"
-                                class="block w-full text-left px-4 py-2 hover:bg-gray-100">
-                                Voir détails
-                            </button>
+
 
                             <button
                                 onclick="openEditGroupe(<?= (int)$g['id_groupe'] ?>)"
@@ -93,12 +94,22 @@
 
                             <div class="border-t"></div>
 
-                            <button
-                                onclick="confirmDeleteGroupe(<?= (int)$g['id_groupe'] ?>)"
-                                class="block w-full text-left px-4 py-2
-                                       text-red-600 hover:bg-red-50 rounded-b-xl">
-                                Supprimer
-                            </button>
+
+                            
+<!-- Bouton dynamique pour chaque groupe -->
+
+
+
+            <button
+                onclick="event.stopPropagation(); confirmDelete(<?= (int)$g['id_groupe'] ?>)"
+                class="block w-full text-left px-4 py-2
+                       text-red-600 hover:bg-red-50 rounded-b-xl">
+                Supprimer
+            </button>
+
+
+
+
                         <?php endif; ?>
                     </div>
 

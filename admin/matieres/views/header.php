@@ -9,7 +9,7 @@
             </p>
         </div>
 <div class="flex items-center gap-3">
-    <button onclick="openAddGroupeModal()"
+    <button onclick="openAddMatiereModal()"
         class="inline-flex items-center gap-2 px-4 py-2 rounded-lg
                bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium">
     <i class="fa-solid fa-plus"></i>
@@ -17,14 +17,14 @@
 </button>
 
     <?php if ($view === 'trash'): ?>
-        <a href="formations.php"
+        <a href="matieres.php"
            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg
                   bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium">
             <i class="fa-solid fa-arrow-left"></i>
             Retour
         </a>
     <?php else: ?>
-      <a href="formations.php?view=trash"
+      <a href="matieres.php?view=trash"
 
            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg
                   border border-gray-300 hover:bg-gray-100
