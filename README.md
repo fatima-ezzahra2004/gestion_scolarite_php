@@ -1,3 +1,13 @@
-## 🖼️ Capture d’écran – Page des prospects et rendez-vous 
+<h2>✨ Captures d’écran du projet</h2>
 
-![Page d’accueil du site](/rospections.png)
+<p align="center">
+ <img src="prospections.png" width="600">
+</p>
+<p align="center"><b>Page de gestion des prospects</b></p>
+
+<hr>
+
+<p align="center">
+   <img src="rendez-vous.png" width="600">
+</p>
+<p align="center"><b>Page de gestion des rendez-vous</b></p>
